@@ -1,0 +1,33 @@
+1. This is for creating a data named assign2 under jnc6641.
+
+$sql_host="cmslamp14.aut.ac.nz";
+$sql_user="jnc6641";
+$sql_pass="";
+$sql_db="jnc6641";
+$conn = mysqli_connect($sql_host,$sql_user,$sql_pass,$sql_db);            
+        if ($conn->connect_error){
+            die("connection fail:".$conn->connect_error);
+        }
+
+$sql1 = "CREATE TABLE IF NOT EXISTS assign2 (
+    bookingid INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    bookingstatus VARCHAR(30) NOT NULL DEFAULT 'unassigned',
+    bookingdate VARCHAR(30) NOT NULL,
+    cname VARCHAR(30) NOT NULL,
+    phone VARCHAR(30) NOT NULL,
+    unumber VARCHAR(50),
+    snumber VARCHAR(30) NOT NULL,
+    stname VARCHAR(30) NOT NULL,
+    sbname VARCHAR(30),
+    dsbname VARCHAR(30),
+    bookingtime VARCHAR(30) NOT NULL,
+    ptime VARCHAR(30) NOT NULL
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
+    
+    if ( $conn ->query( $sql1 ) === TRUE)
+    {   
+    echo "" ;
+    } else {   
+    echo "Create table failed: " . $conn ->error;
+    }
+

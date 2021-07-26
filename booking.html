@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+    <link rel="stylesheet" href="./stylebooking.css">
+<link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
+
+
+</head>
+<body>
+    <h1>Welcome to the booking page</h1>
+    <form onsubmit="return checkForm(this)">
+    <label for="cname">Customer Name: </label>
+    <input type="text" class='formVal' name="cname" id="cname" required /> <br>
+    <label for="phone">Phone Number: </label>
+    <input type="text" name="phone" class='formVal' id="phone" minlength="10" maxlength="12" required /><br>
+    <label for="unumber">Unit Number: </label>
+    <input type="text" name="unumber" class='formVal' id="unumber" /><br>
+    <label for="snumber">Street Number: </label> 
+    <input type="text" name="snumber" class='formVal' id="snumber" required /><br>
+    <label for="stname">Street Name: </label>
+    <input type="text" name="stname" class='formVal' id="stname" required /><br>
+    <label for="sbname">Suburb: </label>
+    <input type="text" name="sbname" class='formVal' id="sbname" ><br>
+    <label for="dsbname">Destination Suburb: </label>
+    <input type="text" name="dsbname" class='formVal' id="dsbname" ><br>
+    <label for="text">Pick-Up Date: </label>
+    <input type="text" name="date" class='formVal' id="date" required /><br>
+    <label for="time">Pick-up Time: </label>
+    <input type="text" name="time" class='formVal' id="time" required /><br>
+    <input type="submit" id="submit" name="submit" value="Submit" onclick="myFunction();return false;">
+    </form>
+    <div>
+          <p name='reference'></p>
+    </div> 
+<script>
+    //here to get the current date  
+        function time(){
+            var time = new Date();
+            var y = time.getFullYear();
+            var m = time.getMonth()+1;
+            var d = time.getDate();
+            return d+'/'+"0"+m +'/'+ y;
+        }
+        
+        const timed = document.getElementById("date");
+       timed.value = time(); // assign the value to the date input
+        
+    // here to get the current time    
+        function today() {
+            var today = new Date();
+            var H = today.getHours();
+            var M = today.getMinutes();
+            if (H < 10) {
+                H ="0"+ H;
+            }
+            if (M < 10) {
+                M = "0" + M;
+            }
+            return H + ":" + M;
+        }
+        var todaytime = today().toLocaleString();
+        document.getElementById("time").value = todaytime;
+        var timepicker = new TimePicker('time', {
+            lang: 'en',
+            theme: 'dark'
+        });
+        timepicker.on('change', function(evt) {
+         if(evt.hour>=10){
+         var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+        evt.element.value = value;
+         }else{
+            var value = ("0"+evt.hour || '00') + ':' + (evt.minute || '00');
+        evt.element.value = value;
+         } 
+        
+    });
+    // form validation starts
+    function myFunction(){   
+    const cname = document.getElementById('cname');
+    const phone = document.getElementById('phone');
+    const snumber = document.getElementById('snumber');
+    const stname = document.getElementById('stname');
+    const date = document.getElementById('date');
+    const times = document.getElementById('time');
+    const regex = new RegExp('^[0-9]{10,12}$');
+    if(cname.value == ''){
+        alert("Please input your name");
+
+    }else if(phone.value == ''){
+        alert("Please input your phone number");
+    }else if(!regex.test(phone.value)){
+        alert("the phone number must between 10 to 12")
+    }
+    else if(snumber.value == ''){
+        alert("Please input your Street Number");
+    }
+    else if(stname.value == ''){
+        alert("Please input your Street Name");
+    }
+    else if(date.value == ''){
+        alert("Please input your Pick-up date");
+    }
+    else if((parseInt(timed.value)*10000) < (parseInt(time())*10000)){
+        alert("you cant choose the previous date");
+    }
+    else if(times.value == ''){
+        alert("Please input your Pick-up time");
+    }
+    else if((document.getElementById("time").value)< todaytime){
+        alert("you cant choose the previous time");
+    }else{	
+        // ajax sending request to the server
+    const p = document.querySelector('p');
+    var elements = document.getElementsByClassName("formVal");
+    var formData = new FormData(); 
+    for(var i=0; i<elements.length; i++)
+    {
+        formData.append(elements[i].name, elements[i].value);
+    }
+    var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function(e)
+        {   
+            e.preventDefault();
+            if(xmlHttp.readyState == 4 && xmlHttp.status >= 200)
+            {
+               p.innerHTML = xmlHttp.responseText;            }
+        }
+        xmlHttp.open("post", "server.php"); 
+        xmlHttp.send(formData); 
+}}
+
+ 
+
+
+</script> 
+    
+</body>
+</html>

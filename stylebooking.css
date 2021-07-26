@@ -1,0 +1,33 @@
+*{
+    padding: 0;
+    margin: 0;
+    
+}
+h1{
+    font-family: 'Courier New', Courier, monospace;
+    color: aquamarine;
+    margin: 10px;
+}
+label{
+    width: 100px;
+    height: 30px;
+    font-weight: bold;
+    margin: 30px;
+}
+#submit{
+    background-color:#424242;
+    width: 500px;
+    height: 35px;
+    border-radius: 18px;
+    text-align: center;
+    margin: 15px;
+}
+input[type=text] {
+    font-size: 25px;
+    background-color: #3CBC8D;
+  color: white;
+    width: 300px;
+    padding: 12px 20px;
+    margin: 8px 8px;
+    box-sizing: border-box;
+  }

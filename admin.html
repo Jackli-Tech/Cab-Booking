@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styleadminn.css">
+    
+</head>
+
+<body>
+    <form>
+        <label for="bsearch">Search Bookings</label>
+        <input type="text" name="bsearch" id="bsearch" class="formVal"><br>
+        <label for="submit">Search button</label>
+        <input type="button" id="submit" name="sbutton" onclick="myFunction(father);return false;">
+    </form>
+    <div class="content"></div>
+    <script>
+        // form validation and sending post request to the server
+         function myFunction(callback){	 
+             const search = document.getElementById('bsearch');
+             const regex = new RegExp('^[0-9]{0,5}$');
+            const div = document.querySelector('.content');
+            var elements = document.getElementsByClassName("formVal");
+            var formData = new FormData(); 
+            if(!regex.test(search.value)){
+                alert("You must input a number that is greater than 0 in order to search");
+            }else if(search.value === '0'){
+                alert("Sorry, you can't input 0");
+            }
+            else{
+                for(var i=0; i<elements.length; i++)
+        {
+        formData.append(elements[i].name, elements[i].value);
+        }
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function()
+        {
+
+            if(xmlHttp.readyState == 4 && xmlHttp.status >= 200)
+            {
+               div.innerHTML = xmlHttp.responseText ;            }
+        }
+        xmlHttp.open("POST", "adminserver.php"); 
+        xmlHttp.send(formData); 
+        
+        setTimeout(callback,500);
+            }
+        
+}
+
+
+// the function is to get the the elements that added to the html.
+function father(){
+    var i;
+    var td = document.querySelectorAll('.td');
+    var button = document.querySelectorAll('.button');
+
+
+ console.log("foreach starts");
+
+button.forEach(buttonfun)
+// Assign click event to every button element
+function buttonfun(btn,index){
+    const id =btn.id;
+    btn.addEventListener('click',function(){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function()
+        {
+
+            if(xmlHttp.readyState == 4 && xmlHttp.status >= 200)
+            { 
+                alert(xmlHttp.responseText);
+                td[index].innerHTML=xmlHttp.responseText;
+        }
+    }
+        xmlHttp.open("POST", "adminserver.php"); 
+       
+        var data = new FormData();
+        
+        data.append('id', id);
+        console.log("id is"+id);
+        xmlHttp.send(data); 
+    });
+}
+
+}
+
+
+    </script>
+</body>
+</html>
